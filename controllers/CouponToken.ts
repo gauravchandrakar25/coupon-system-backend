@@ -142,7 +142,7 @@ exports.ImageToIPFS = async (req: any, res: any) => {
     const tokenValidity = req.body.expirationTime;
     const url = req.body.websiteUrl;
     const tokenId = Number(req.body.tokenId);
-    const amount = Number(req.body.utilityTokenQuantity);
+    const amount = Number(req.body.couponTokenQuantity);
     const brand_name = req.body.brand_name;
     const coupon_code = req.body.coupon_code;
     const token_description = req.body.token_description;
@@ -253,11 +253,11 @@ exports.ImageToIPFS = async (req: any, res: any) => {
       console.error("Error in minting token: ", error);
       throw error;
     }
-    const utilityTransactionHash = transactionLink;
+    const couponTransactionHash = transactionLink;
 
     return res.status(200).json({
       MetaDataHash: objHash,
-      utilityMintedToken: utilityTransactionHash,
+      couponMintedToken: couponTransactionHash,
       tokenId,
     });
   } catch (error: any) {
