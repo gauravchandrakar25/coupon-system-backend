@@ -76,9 +76,10 @@ const ipfs = ipfsAPI({
   },
 });
 
-const uploadImageToIPFS = async (imageBuffer: string) => {
+const uploadImageToIPFS = async (imageBuffer: any) => {
   try {
     const ipfsResponse = await ipfs.add(imageBuffer);
+    console.log("IPFS", ipfsResponse);
     const imageHash = ipfsResponse[0].hash;
     return imageHash;
   } catch (error) {
@@ -134,7 +135,7 @@ function epochToJsDate(tokenValidity: any) {
   return formattedDateTime;
 }
 
-exports.ImageToIPFS = async (req: any, res: Response) => {
+exports.ImageToIPFS = async (req: any, res: any) => {
   try {
     const imageBuffer = req?.file?.buffer;
     const name = req.body.tokenname;
@@ -144,6 +145,7 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
     const amount = Number(req.body.utilityTokenQuantity);
     const brand_name = req.body.brand_name;
     const coupon_code = req.body.coupon_code;
+    const token_description = req.body.token_description;
 
     const validity = Number(tokenValidity)
       ? epochToJsDate(tokenValidity)
@@ -221,6 +223,7 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
       tokenId: tokenId,
       quantity: amount,
       attributes: attributes,
+      token_description: token_description,
     };
 
     // send object data to ipfs
@@ -252,7 +255,7 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
     }
     const utilityTransactionHash = transactionLink;
 
-    return res.json({
+    return res.status(200).json({
       MetaDataHash: objHash,
       utilityMintedToken: utilityTransactionHash,
       tokenId,
