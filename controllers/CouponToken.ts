@@ -10,8 +10,7 @@ const auth =
   Buffer.from(INFURA_ID + ":" + INFURA_SECRET_KEY).toString("base64");
 
 const { Web3 } = require("web3");
-
-const { ethers, Contract } = require("ethers");
+const { ethers } = require("ethers");
 
 const { rpcUrl, CouponTokenContractAddress } = require("../config/config");
 
@@ -89,7 +88,7 @@ const uploadImageToIPFS = async (imageBuffer: string) => {
 };
 
 // Function for uploading JSON string to IPFS
-const uploadDataToIPFS = async (dataString: string) => {
+const uploadDataToIPFS = async (dataString: any) => {
   try {
     const dataBuffer = Buffer.from(dataString); // Convert the JSON string to a buffer
     const ipfsResponse = await ipfs.add(dataBuffer);
