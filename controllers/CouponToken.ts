@@ -75,3 +75,14 @@ const ipfs = ipfsAPI({
     authorization: auth,
   },
 });
+
+const uploadImageToIPFS = async (imageBuffer: string) => {
+  try {
+    const ipfsResponse = await ipfs.add(imageBuffer);
+    const imageHash = ipfsResponse[0].hash;
+    return imageHash;
+  } catch (error) {
+    console.error(error);
+    throw new Error("IPFS upload failed");
+  }
+};
