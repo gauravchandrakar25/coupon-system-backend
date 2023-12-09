@@ -7,6 +7,6 @@ const ipfsController = require("../controllers/CouponToken");
 
 router.post(
   "/couponTokenize",
-  upload.single("projectImage"),
-  ipfsController.couponTokenize
+  upload.single("image"),
+  ipfsController.mintToken
 );
