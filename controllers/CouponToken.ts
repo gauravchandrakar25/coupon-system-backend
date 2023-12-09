@@ -43,8 +43,8 @@ async function mintToken(
   id: number,
   amount: number,
   expirationTime: number,
-  uri: string,
-  uniqueCode: any
+  uniqueCode: number,
+  uri: string
 ) {
   const senderAccount = web3.eth.accounts.privateKeyToAccount(privateKey);
   const nonce = await web3.eth.getTransactionCount(senderAccount.address);
@@ -137,7 +137,7 @@ function epochToJsDate(tokenValidity: any) {
 
 exports.ImageToIPFS = async (req: any, res: Response) => {
   try {
-    // const imageBuffer = req?.file?.buffer;
+    const imageBuffer = req?.file?.buffer;
     const name = req.body.tokenname;
     const tokenValidity = req.body.expirationTime;
     const url = req.body.websiteUrl;
@@ -148,7 +148,7 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
 
     const validity = Number(tokenValidity)
       ? epochToJsDate(tokenValidity)
-      : "Lifetime";
+      : "LifeTime";
 
     if (Number.isNaN(tokenId)) {
       return res.status(400).json({
@@ -162,7 +162,7 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
       return res.status(400).json({
         success: false,
         message: "Bad Request - Invalid input data",
-        error: "amount must be a valid integer",
+        error: "amount ID must be a valid integer",
       });
     }
 
@@ -188,9 +188,9 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
       },
     ];
 
-    // if (!imageBuffer) {
-    //   return res.status(400).json({ error: "No image provided" });
-    // }
+    if (!imageBuffer) {
+      return res.status(400).json({ error: "No image provided" });
+    }
 
     let balance;
     try {
@@ -207,16 +207,16 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
         `Token with tokenId ${tokenId} already exists for address ${CouponTokenContractAddress}`
       );
     }
-    // let image;
-    // try {
-    //   image = await uploadImageToIPFS(imageBuffer);
-    // } catch (error) {
-    //   console.log("Error in uploading the image to IPFS");
-    //   throw error;
-    // }
+    let image;
+    try {
+      image = await uploadImageToIPFS(imageBuffer);
+    } catch (error) {
+      console.log("Error in uploading the image to IPFS");
+      throw error;
+    }
     const data = {
       name: name,
-      //   image: `ipfs://${image}/`,
+      image: `ipfs://${image}/`,
       expirationTime: tokenValidity,
       url: url,
       tokenId: tokenId,
@@ -227,24 +227,24 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
     // send object data to ipfs
     const dataString = JSON.stringify(data);
 
-    // let objHash;
-    // try {
-    //   objHash = await uploadDataToIPFS(dataString);
-    // } catch (error) {
-    //   console.log("Error in uploading the data to IPFS");
-    //   throw error;
-    // }
-    // const uri = `ipfs://${objHash}/`;
+    let objHash;
+    try {
+      objHash = await uploadDataToIPFS(dataString);
+    } catch (error) {
+      console.log("Error in uploading the data to IPFS");
+      throw error;
+    }
+    const uri = `ipfs://${objHash}/`;
 
     let transactionLink;
     try {
       const result = await mintToken(
         CouponTokenContractAddress,
-        1,
-        498,
-        1708757487,
-        "745775",
-        "75756775"
+        tokenId,
+        amount,
+        tokenValidity,
+        coupon_code,
+        uri
       );
       transactionLink = result.transactionLink;
     } catch (error) {
@@ -254,7 +254,7 @@ exports.ImageToIPFS = async (req: any, res: Response) => {
     const utilityTransactionHash = transactionLink;
 
     return res.json({
-      MetaDataHash: "",
+      MetaDataHash: objHash,
       utilityMintedToken: utilityTransactionHash,
       tokenId,
     });
