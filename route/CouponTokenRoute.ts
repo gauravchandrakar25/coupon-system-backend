@@ -6,7 +6,7 @@ const upload = multer({ storage: storage });
 const ipfsController = require("../controllers/CouponToken");
 
 router.post(
-  "/projectTokenize",
+  "/couponTokenize",
   upload.single("projectImage"),
-  ipfsController.projectTokenize
+  ipfsController.couponTokenize
 );
