@@ -5,24 +5,15 @@ Welcome to the backend repository for our innovative Web3 Discount Coupon Smart 
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Features](#features)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [API Endpoints](#api-endpoints)
-6. [Contributing](#contributing)
-7. [License](#license)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [API Endpoints](#api-endpoints)
+5. [Contributing](#contributing)
+6. [License](#license)
 
 ## Introduction
 
 Our project introduces a novel approach to discount coupons, leveraging the capabilities of Web3 technology. The backend serves as the foundation for our decentralized smart contract system, facilitating secure, transparent, and sustainable discount mechanisms.
-
-## Features
-
-- **Smart Contract Integration**: Seamless integration with Web3 smart contracts to issue, manage, and validate discount tokens.
-- **Token Recycling System**: Implementing a unique feature allowing users to resend expired tokens, receiving a new token for use exclusively within the ecosystem.
-- **Security**: Robust security measures to prevent fraud, ensuring the integrity and authenticity of each digital token.
-- **Transparency**: Utilizing blockchain technology for transparent and immutable transactions, fostering trust between users and the brand.
-- **Scalability**: Built with scalability in mind to accommodate future growth and increasing transaction volumes.
 
 ## Installation
 
