@@ -1,4 +1,4 @@
-# Web3 Discount Coupon Smart Contract Backend
+# Coupon System Backend
 
 Welcome to the backend repository for our innovative Web3 Discount Coupon Smart Contract project. This repository houses the server-side code and logic that powers the core functionality of our decentralized discount coupon system.
 
